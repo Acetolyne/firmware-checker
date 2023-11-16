@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
@@ -78,14 +79,27 @@ func main() {
 	mainApp := app.New()
 	//@todo set version dynamically
 	applicationWindow := mainApp.NewWindow("Firmware Checker v1.0.0-beta")
+	applicationWindow.Resize(fyne.NewSize(1024, 768))
 
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Devices", widget.NewLabel("Device List")),
-		container.NewTabItem("URL Settings", widget.NewLabel("URL List")),
+		container.NewTabItem("Devices", deviceList()),
+		container.NewTabItem("URL Settings", urlList()),
 	)
 
 	tabs.SetTabLocation(container.TabLocationLeading)
 
 	applicationWindow.SetContent(tabs)
 	applicationWindow.ShowAndRun()
+}
+
+func deviceList() (fyne.CanvasObject) {
+	//todo get the current list of devices from the database
+	//@todo bind variable to the widget
+	return widget.NewLabel("Device List")
+}
+
+func urlList() (fyne.CanvasObject) {
+	//todo get the current list of urls from the database
+	//@todo bind variable to the widget
+	return widget.NewLabel("URL List")
 }
