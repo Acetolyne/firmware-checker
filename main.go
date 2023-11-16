@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 
-	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
@@ -77,40 +76,16 @@ func init() {
 
 func main() {
 	mainApp := app.New()
-	applicationWindow := applicationScreen(mainApp)
-	welcomeWindow := welcomeScreen(mainApp)
-	welcomeWindow.Show()
-	welcomeWindow.SetOnClosed(func() {
-		applicationWindow.Show()
-	})
+	//@todo set version dynamically
+	applicationWindow := mainApp.NewWindow("Firmware Checker v1.0.0-beta")
 
-	mainApp.Run()
-}
+	tabs := container.NewAppTabs(
+		container.NewTabItem("Devices", widget.NewLabel("Device List")),
+		container.NewTabItem("URL Settings", widget.NewLabel("URL List")),
+	)
 
-func applicationScreen(mainApp fyne.App) fyne.Window {
-	//@todo import the version dynamically
-	window := mainApp.NewWindow("Firmware Checker v1.0.0-beta")
-	window.Resize(fyne.NewSize(1024, 768))
-	var applicationText = widget.NewLabel("Welcome")
-	window.SetContent(container.NewVBox(
-		applicationText,
-	))
+	tabs.SetTabLocation(container.TabLocationLeading)
 
-	return window
-}
-
-func welcomeScreen(mainApp fyne.App) fyne.Window {
-	//@todo set version in a dynamic way
-	window := mainApp.NewWindow("Firmware Checker v1.0.0-beta")
-
-	window.Resize(fyne.NewSize(1024, 768))
-	var welcomeText = widget.NewLabel("Welcome")
-	window.SetContent(container.NewVBox(
-		welcomeText,
-		widget.NewButton("OK", func() {
-
-			window.Close()
-		}),
-	))
-	return window
+	applicationWindow.SetContent(tabs)
+	applicationWindow.ShowAndRun()
 }
