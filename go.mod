@@ -1,3 +1,5 @@
 module github.com/Acetolyne/firmware-checker
 
-go 1.17
+go 1.20
+
+require github.com/mattn/go-sqlite3 v1.14.18
