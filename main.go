@@ -7,6 +7,11 @@ import (
 	"log"
 	"os"
 
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -71,5 +76,41 @@ func init() {
 }
 
 func main() {
-	fmt.Println("welcome")
+	mainApp := app.New()
+	applicationWindow := applicationScreen(mainApp)
+	welcomeWindow := welcomeScreen(mainApp)
+	welcomeWindow.Show()
+	welcomeWindow.SetOnClosed(func() {
+		applicationWindow.Show()
+	})
+
+	mainApp.Run()
+}
+
+func applicationScreen(mainApp fyne.App) fyne.Window {
+	//@todo import the version dynamically
+	window := mainApp.NewWindow("Firmware Checker v1.0.0-beta")
+	window.Resize(fyne.NewSize(1024, 768))
+	var applicationText = widget.NewLabel("Welcome")
+	window.SetContent(container.NewVBox(
+		applicationText,
+	))
+
+	return window
+}
+
+func welcomeScreen(mainApp fyne.App) fyne.Window {
+	//@todo set version in a dynamic way
+	window := mainApp.NewWindow("Firmware Checker v1.0.0-beta")
+
+	window.Resize(fyne.NewSize(1024, 768))
+	var welcomeText = widget.NewLabel("Welcome")
+	window.SetContent(container.NewVBox(
+		welcomeText,
+		widget.NewButton("OK", func() {
+
+			window.Close()
+		}),
+	))
+	return window
 }
